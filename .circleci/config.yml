@@ -24,9 +24,9 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-        name: terraform
-        commend: |
-          terraform apply -auto-approve tfapply
+          name: terraform
+          command: |
+            terraform apply -auto-approve tfapply
       - persist_to_workspace:
           root: .
           paths:
@@ -38,6 +38,6 @@ workflows:
     jobs:
       - plan-apply
       - review-apply:
-        type: approval
-        requires:
+          type: approval
+          requires:
           - plan-apply
