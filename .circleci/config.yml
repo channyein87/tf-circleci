@@ -17,8 +17,27 @@ jobs:
           paths:
             - .
 
+  apply:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+        name: terraform
+        commend: |
+          terraform apply -auto-approve tfapply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
 workflows:
   version: 2
   plan_approve_apply:
     jobs:
       - plan-apply
+      - review-apply:
+        type: approval
+        requires:
+          - plan-apply
